@@ -1,4 +1,23 @@
 package com.konrad.oqrsservice.service;
 
+import com.konrad.oqrsservice.dto.AppointmentCreateDTO;
+import com.konrad.oqrsservice.dto.AppointmentDTO;
+import com.konrad.oqrsservice.model.Appointment;
+import com.konrad.oqrsservice.model.Resource;
+import com.konrad.oqrsservice.model.TimePeriod;
+
+import java.time.LocalDate;
+import java.util.List;
+
 public interface AppointmentService {
+
+    AppointmentDTO addAppointment(Long resourceId, AppointmentCreateDTO createDTO);
+
+    boolean isBookAvailable(Long resourceId, AppointmentCreateDTO createDTO);
+
+    List<Appointment> getAppointmentsByResourceId(Long resourceId, LocalDate day);
+
+    List<TimePeriod> getAvailableTimePeriods(List<TimePeriod> periods, List<Appointment> appointments);
+
+    List<TimePeriod> calculateAvailableHours(List<TimePeriod> availableTimePeriods, Resource resource);
 }

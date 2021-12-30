@@ -1,15 +1,18 @@
 package com.konrad.oqrsservice.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Data
 @AllArgsConstructor
 public class DayPlan {
 
     private TimePeriod workingHours;
+
     private List<TimePeriod> breaks;
 
     public DayPlan() {
@@ -28,23 +31,23 @@ public class DayPlan {
 
         if (!breaks.isEmpty()) {
             ArrayList<TimePeriod> toAdd = new ArrayList();
-            for (TimePeriod break1 : breaks) {
-                if (break1.getStart().isBefore(workingHours.getStart())) {
-                    break1.setStart(workingHours.getStart());
+            for (TimePeriod breakItem : breaks) {
+                if (breakItem.getStart().isBefore(workingHours.getStart())) {
+                    breakItem.setStart(workingHours.getStart());
                 }
-                if (break1.getEnd().isAfter(workingHours.getEnd())) {
-                    break1.setEnd(workingHours.getEnd());
+                if (breakItem.getEnd().isAfter(workingHours.getEnd())) {
+                    breakItem.setEnd(workingHours.getEnd());
                 }
                 for (TimePeriod period : timePeriodWithBreaks) {
-                    if (break1.getStart().equals(period.getStart()) && break1.getEnd().isAfter(period.getStart()) && break1.getEnd().isBefore(period.getEnd())) {
-                        period.setStart(break1.getEnd());
+                    if (breakItem.getStart().equals(period.getStart()) && breakItem.getEnd().isAfter(period.getStart()) && breakItem.getEnd().isBefore(period.getEnd())) {
+                        period.setStart(breakItem.getEnd());
                     }
-                    if (break1.getStart().isAfter(period.getStart()) && break1.getStart().isBefore(period.getEnd()) && break1.getEnd().equals(period.getEnd())) {
-                        period.setEnd(break1.getStart());
+                    if (breakItem.getStart().isAfter(period.getStart()) && breakItem.getStart().isBefore(period.getEnd()) && breakItem.getEnd().equals(period.getEnd())) {
+                        period.setEnd(breakItem.getStart());
                     }
-                    if (break1.getStart().isAfter(period.getStart()) && break1.getEnd().isBefore(period.getEnd())) {
-                        toAdd.add(new TimePeriod(period.getStart(), break1.getStart()));
-                        period.setStart(break1.getEnd());
+                    if (breakItem.getStart().isAfter(period.getStart()) && breakItem.getEnd().isBefore(period.getEnd())) {
+                        toAdd.add(new TimePeriod(period.getStart(), breakItem.getStart()));
+                        period.setStart(breakItem.getEnd());
                     }
                 }
             }
