@@ -1,0 +1,9 @@
+<mat-form-field appearance="fill">
+  <mat-label>Resource</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let resource of resources" [value]="resource.id" (onSelectionChange)="changeResource(resource,$event)">
+      {{resource.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<full-calendar #calendar [options]="calendarOptions" [deepChangeDetection]="true" class="calendar"></full-calendar>

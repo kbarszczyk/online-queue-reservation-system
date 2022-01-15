@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -110,5 +111,12 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
         }
         return availableHours;
+    }
+
+    @Override
+    public List<AppointmentDTO> getAppointmentsByResourceId(Long resourceId) {
+        return appointmentRepository.findAppointmentByResourceId(resourceId).stream()
+                .map(appointment -> AppointmentMapper.INSTANCE.dboToDto(appointment))
+                .collect(Collectors.toList());
     }
 }

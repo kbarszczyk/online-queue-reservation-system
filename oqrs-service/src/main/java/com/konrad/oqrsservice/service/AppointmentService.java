@@ -20,4 +20,6 @@ public interface AppointmentService {
     List<TimePeriod> getAvailableTimePeriods(List<TimePeriod> periods, List<Appointment> appointments);
 
     List<TimePeriod> calculateAvailableHours(List<TimePeriod> availableTimePeriods, Resource resource);
+
+    List<AppointmentDTO> getAppointmentsByResourceId(Long resourceId);
 }

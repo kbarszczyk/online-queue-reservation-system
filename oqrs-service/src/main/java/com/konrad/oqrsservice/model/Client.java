@@ -21,7 +21,12 @@ public class Client extends BaseEntity {
     @Email
     private String email;
 
+
     @OneToOne
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
+
+    public Client() {
+
+    }
 }

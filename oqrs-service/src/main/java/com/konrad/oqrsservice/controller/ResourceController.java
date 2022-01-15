@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/resource")
 @RequiredArgsConstructor
@@ -17,6 +19,12 @@ public class ResourceController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResourceDTO createResource(@RequestBody ResourceCreateDTO dto) {
-       return resourceService.addResource(dto);
+        return resourceService.addResource(dto);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<ResourceDTO> getAllResources() {
+        return resourceService.getAllResources();
     }
 }

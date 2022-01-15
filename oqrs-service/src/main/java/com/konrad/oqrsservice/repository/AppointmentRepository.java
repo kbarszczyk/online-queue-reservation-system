@@ -15,4 +15,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Query("select a from Appointment a where a.resource.id = :resourceId and  a.start >=:dayStart and  a.start <=:dayEnd")
     List<Appointment> findByResourceWithStartInPeriod(@Param("resourceId") Long resourceId, @Param("dayStart") LocalDateTime startPeriod, @Param("dayEnd") LocalDateTime endPeriod);
 
+    List<Appointment> findAppointmentByResourceId(Long resourceId);
+
 }

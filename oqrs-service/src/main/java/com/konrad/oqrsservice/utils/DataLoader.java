@@ -1,0 +1,70 @@
+package com.konrad.oqrsservice.utils;
+
+import com.konrad.oqrsservice.dto.AppointmentCreateDTO;
+import com.konrad.oqrsservice.dto.ClientCreateDTO;
+import com.konrad.oqrsservice.dto.ResourceCreateDTO;
+import com.konrad.oqrsservice.dto.ResourceDTO;
+import com.konrad.oqrsservice.service.AppointmentService;
+import com.konrad.oqrsservice.service.ResourceService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+
+@Component
+@RequiredArgsConstructor
+public class DataLoader implements CommandLineRunner {
+
+    private final ResourceService resourceService;
+    private final AppointmentService appointmentService;
+
+    @Override
+    public void run(String... args) throws Exception {
+        addTestData();
+    }
+
+    private void addTestData() {
+
+        ResourceCreateDTO resource = new ResourceCreateDTO();
+        resource.setName("Wydział Komunikacji");
+        resource.setLengthOfVisit(30);
+        resource.setWeekendsEnabled(true);
+
+        ResourceDTO addedResource = resourceService.addResource(resource);
+
+
+        ClientCreateDTO client = new ClientCreateDTO();
+        client.setEmail("mail99222@gmail.com");
+        client.setFirstName("Konrad");
+        client.setLastName("Barszczyk");
+
+        AppointmentCreateDTO appointment = new AppointmentCreateDTO();
+        appointment.setClient(client);
+        appointment.setStart(LocalDateTime.of(2022, 1, 14, 10, 0, 0, 0));
+        appointment.setReasonOfVisit("Rejestracja pojazdu");
+
+        appointmentService.addAppointment(addedResource.getId(), appointment);
+
+
+        ResourceCreateDTO resource2 = new ResourceCreateDTO();
+        resource2.setName("Gabinet dentystyczny");
+        resource2.setLengthOfVisit(60);
+        resource2.setWeekendsEnabled(false);
+
+        ResourceDTO addedResource2 = resourceService.addResource(resource2);
+
+
+        ClientCreateDTO client2 = new ClientCreateDTO();
+        client2.setEmail("mail99222@gmail.com");
+        client2.setFirstName("Konrad");
+        client2.setLastName("Barszczyk");
+
+        AppointmentCreateDTO appointment2 = new AppointmentCreateDTO();
+        appointment2.setClient(client2);
+        appointment2.setStart(LocalDateTime.of(2022, 2, 14, 11, 0, 0, 0));
+        appointment2.setReasonOfVisit("Ból zęba");
+
+        appointmentService.addAppointment(addedResource2.getId(), appointment2);
+    }
+}
