@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -118,5 +119,35 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.findAppointmentByResourceId(resourceId).stream()
                 .map(appointment -> AppointmentMapper.INSTANCE.dboToDto(appointment))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LocalTime> getUnavailableTimes(Long resourceId, LocalDate dateToBook) {
+        List<LocalTime> disabledTimes = new ArrayList<>();
+        List<Appointment> appointments = getAppointmentsByResourceId(resourceId, dateToBook);
+
+        for (Appointment appointment : appointments) {
+            disabledTimes.add(appointment.getStart().toLocalTime());
+        }
+
+        return disabledTimes;
+    }
+
+    @Override
+    public List<TimePeriod> getAvailableTimes(Long resourceId, LocalDate dateToBook) {
+        Resource resourceToBook = resourceRepository.findById(resourceId)
+                .orElseThrow(() -> new RuntimeException("Resource with " + resourceId + " not found!"));
+
+        WorkPlan workPlan = resourceToBook.getWorkPlan();
+
+        DayPlan selectedDay = workPlan.getDay(dateToBook.getDayOfWeek().toString().toLowerCase());
+
+        List<Appointment> resourceAppointments = getAppointmentsByResourceId(resourceId, dateToBook);
+
+        List<TimePeriod> availablePeriods = selectedDay.getTimePeriodsWithBreaks();
+
+        availablePeriods = getAvailableTimePeriods(availablePeriods, resourceAppointments);
+
+        return calculateAvailableHours(availablePeriods, resourceToBook);
     }
 }

@@ -1,1 +1,66 @@
-<p>Add appointment works!</p>
+<mat-stepper orientation="vertical" [linear]=true #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Select a resource</ng-template>
+      <mat-form-field appearance="fill">
+        <mat-select [(value)]="resourceId" formControlName="firstCtrl" placeholder="Select a resource to book">
+          <mat-option *ngFor="let resource of resources" [value]="resource.id">
+            {{resource.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext (click)="initCalendar()">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup" [completed]="isDateSelect">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Select time to book</ng-template>
+      <ng-template matStepContent>
+        <full-calendar #bookCalendar [options]="calendarOptions" [deepChangeDetection]="true"
+                       class="calendar"></full-calendar>
+        <button style="margin-top:10px;" mat-button matStepperPrevious>Back</button>
+      </ng-template>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="thirdFormGroup">
+    <ng-template matStepLabel>Fill your details</ng-template>
+    <form [formGroup]="thirdFormGroup">
+      <div class="grid">
+      <mat-form-field appearance="fill">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" required>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" required>
+      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="user@example.com" formControlName="email" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Reason for the visit</mat-label>
+          <textarea matInput formControlName="reason"></textarea>
+        </mat-form-field>
+      </div>
+    </form>
+      <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext [disabled]="!thirdFormGroup.valid">Next</button>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Summary</ng-template>
+    <p> <span class="mat-body-strong">First name: </span> {{this.thirdFormGroup.getRawValue().firstName}}</p>
+    <p><span class="mat-body-strong">Last name: </span> {{this.thirdFormGroup.getRawValue().lastName}}</p>
+    <p><span class="mat-body-strong">Email: </span> {{this.thirdFormGroup.getRawValue().email}}</p>
+    <p><span class="mat-body-strong">Reason for the visit: </span> {{this.thirdFormGroup.getRawValue().reason}}</p>
+    <p><span class="mat-body-strong">Resource: </span> {{this.selectedResourceName}}</p>
+    <p><span class="mat-body-strong">Appointment date: </span> {{this.selectedAppointmentDate}}</p>
+    <mat-divider></mat-divider>
+    <div class="buttons">
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-raised-button (click)="bookAppointment()">Book appointment</button>
+    </div>
+  </mat-step>
+</mat-stepper>

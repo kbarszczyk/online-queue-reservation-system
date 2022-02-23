@@ -15,4 +15,7 @@ public class ResourceCreateDTO {
 
     @NotNull
     private int lengthOfVisit;
+
+    @NotNull
+    private int slots;
 }

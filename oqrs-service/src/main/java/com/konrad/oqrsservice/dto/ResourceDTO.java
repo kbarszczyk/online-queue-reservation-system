@@ -7,4 +7,5 @@ public class ResourceDTO extends BaseDTO {
     private String name;
     private boolean weekendsEnabled;
     private int lengthOfVisit;
+    private int slots;
 }

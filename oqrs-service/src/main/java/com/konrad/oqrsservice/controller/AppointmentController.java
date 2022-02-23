@@ -24,7 +24,7 @@ public class AppointmentController {
 
     @GetMapping("/{resourceId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<AppointmentDTO> getAppointmentsByResourceId(@PathVariable("resourceId") Long resourceId){
+    public List<AppointmentDTO> getAppointmentsByResourceId(@PathVariable("resourceId") Long resourceId) {
         return appointmentService.getAppointmentsByResourceId(resourceId);
     }
 }

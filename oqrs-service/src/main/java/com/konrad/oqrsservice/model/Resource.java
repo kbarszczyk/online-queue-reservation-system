@@ -29,6 +29,9 @@ public class Resource extends BaseEntity {
     @NotNull
     private int lengthOfVisit;
 
+    @NotNull
+    private int slots;
+
     public Resource() {
     }
 
@@ -38,5 +41,6 @@ public class Resource extends BaseEntity {
         workPlan.setResource(this);
         this.weekendsEnabled=dto.isWeekendsEnabled();
         this.lengthOfVisit= dto.getLengthOfVisit();
+        this.slots= dto.getSlots();
     }
 }

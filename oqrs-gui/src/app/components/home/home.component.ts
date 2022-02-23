@@ -24,13 +24,14 @@ export class HomeComponent implements OnInit {
     initialView: 'dayGridMonth',
     height: 700,
     aspectRatio: 2,
+    lazyFetching: true,
     headerToolbar: {
       start: 'prev,next today',
       center: 'title',
       end: 'dayGridMonth,dayGridWeek,listWeek,timeGridWeek'
     },
-    buttonText:{
-      'dayGridWeek':'day'
+    buttonText: {
+      'dayGridWeek': 'day'
     },
     firstDay: 1,
     selectable: false,
@@ -41,8 +42,8 @@ export class HomeComponent implements OnInit {
       minute: '2-digit',
       meridiem: false
     },
-    eventBackgroundColor:'#f54242',
-    eventBorderColor:'#162466',
+    eventBackgroundColor: '#f54242',
+    eventBorderColor: '#162466',
     eventTextColor: "white"
   }
 

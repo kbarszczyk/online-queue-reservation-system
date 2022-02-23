@@ -30,6 +30,7 @@ public class DataLoader implements CommandLineRunner {
         resource.setName("Wydział Komunikacji");
         resource.setLengthOfVisit(30);
         resource.setWeekendsEnabled(true);
+        resource.setSlots(1);
 
         ResourceDTO addedResource = resourceService.addResource(resource);
 
@@ -41,7 +42,7 @@ public class DataLoader implements CommandLineRunner {
 
         AppointmentCreateDTO appointment = new AppointmentCreateDTO();
         appointment.setClient(client);
-        appointment.setStart(LocalDateTime.of(2022, 1, 14, 10, 0, 0, 0));
+        appointment.setStart(LocalDateTime.of(2022, 1, 14, 8, 0, 0, 0));
         appointment.setReasonOfVisit("Rejestracja pojazdu");
 
         appointmentService.addAppointment(addedResource.getId(), appointment);
@@ -51,6 +52,7 @@ public class DataLoader implements CommandLineRunner {
         resource2.setName("Gabinet dentystyczny");
         resource2.setLengthOfVisit(60);
         resource2.setWeekendsEnabled(false);
+        resource2.setSlots(2);
 
         ResourceDTO addedResource2 = resourceService.addResource(resource2);
 

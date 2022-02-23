@@ -17,4 +17,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findAppointmentByResourceId(Long resourceId);
 
+    int countAppointmentsByStart(LocalDateTime start);
 }
