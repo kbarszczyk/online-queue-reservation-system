@@ -1,9 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Resource} from "../../models/Resource";
+import {AppointmentCreateDTO} from "../../dto/AppointmentCreateDTO";
 import {ResourceService} from "../../services/resource.service";
 import {CalendarOptions, FullCalendarComponent} from "@fullcalendar/angular";
 import {MatStepper} from "@angular/material/stepper";
+import {AppointmentService} from "../../services/appointment.service";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-appointment',
@@ -17,13 +21,13 @@ export class AppointmentComponent implements OnInit {
   @ViewChild('stepper') private myStepper!: MatStepper;
 
   resources: Array<Resource> = [];
-  resourceId: Number = 1;
+  resourceId: number = 1;
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup;
   thirdFormGroup!: FormGroup;
-  selectedAppointmentDate!: string;
+  selectedAppointmentDate!: string | null;
   isDateSelect: boolean = false;
-  selectedResourceName!:String;
+  selectedResourceName!: String;
 
 
   calendarOptions: CalendarOptions = {
@@ -60,7 +64,8 @@ export class AppointmentComponent implements OnInit {
     eventBackgroundColor: 'white'
   }
 
-  constructor(private _formBuilder: FormBuilder, private resourceService: ResourceService) {
+  constructor(private _formBuilder: FormBuilder, private router: Router, private resourceService: ResourceService,
+              private appointmentService: AppointmentService,private snackBar:MatSnackBar) {
   }
 
 
@@ -101,15 +106,30 @@ export class AppointmentComponent implements OnInit {
   }
 
   handleClick(event) {
-    this.selectedAppointmentDate = event.event.start.toUTCString().substring(event.event.start.length,25);
+    this.selectedAppointmentDate = new Date(event.event.start.toString().split('GMT')[0]+' UTC').toISOString();
     console.log(this.selectedAppointmentDate);
     this.isDateSelect = true;
     setTimeout(() =>
       this.myStepper.next(), 1);
   }
 
-  bookAppointment(){
+  bookAppointment() {
+    let createDTO: AppointmentCreateDTO = {
+      start: String(this.selectedAppointmentDate),
+      client: {
+        firstName: String(this.thirdFormGroup.getRawValue().firstName),
+        lastName: String(this.thirdFormGroup.getRawValue().lastName),
+        email: String(this.thirdFormGroup.getRawValue().email)
+      },
+      reasonOfVisit: String(this.thirdFormGroup.getRawValue().reason)
+    };
 
+    this.appointmentService.createAppointment(this.resourceId, createDTO).subscribe(response =>
+      console.log(response));
+    this.router.navigate(['home']);
+    this.snackBar.open('Appointment booked successfully!', '', {
+      duration: 3000,
+      panelClass: ['my-snackbar']
+    });
   }
-
 }

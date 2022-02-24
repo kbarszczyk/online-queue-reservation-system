@@ -31,6 +31,7 @@ import {MatStepperModule} from "@angular/material/stepper";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -71,7 +72,7 @@ FullCalendarModule.registerPlugins([
     MatDatepickerModule,
     MatNativeDateModule
   ],
-  providers: [MatDatepickerModule],
+  providers: [MatDatepickerModule,MatSnackBar],
   bootstrap: [AppComponent]
 })
 export class AppModule {

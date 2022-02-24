@@ -40,7 +40,8 @@ export class HomeComponent implements OnInit {
     eventTimeFormat: {
       hour: '2-digit',
       minute: '2-digit',
-      meridiem: false
+      meridiem: false,
+      hour12: false
     },
     eventBackgroundColor: '#f54242',
     eventBorderColor: '#162466',
