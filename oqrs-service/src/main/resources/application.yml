@@ -9,3 +9,6 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
+
+jwt:
+  secret: dZO4m9GNCwtHGJ5nOoBbWDETDVa34343xxXFerv$^223!$#@%$^*!
