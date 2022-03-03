@@ -23,15 +23,19 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {MatStepperModule} from "@angular/material/stepper";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {AuthenticationService} from "./services/authentication.service";
+import {UserService} from "./services/user.service";
+import {AuthInterceptor} from "./interceptors/auth.interceptor";
+import {AuthenticationGuard} from "./guard/authentication.guard";
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -70,9 +74,14 @@ FullCalendarModule.registerPlugins([
     MatStepperModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    FormsModule
   ],
-  providers: [MatDatepickerModule,MatSnackBar],
+  providers: [MatDatepickerModule, MatSnackBar, AuthenticationGuard, AuthenticationService, UserService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

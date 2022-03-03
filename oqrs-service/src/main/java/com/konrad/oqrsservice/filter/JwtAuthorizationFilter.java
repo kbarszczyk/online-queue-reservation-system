@@ -1,10 +1,7 @@
 package com.konrad.oqrsservice.filter;
 
-import com.konrad.oqrsservice.config.SecurityConstant;
 import com.konrad.oqrsservice.utils.JWTTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +17,8 @@ import java.util.List;
 
 import static com.konrad.oqrsservice.config.SecurityConstant.OPTIONS_HTTP_METHOD;
 import static com.konrad.oqrsservice.config.SecurityConstant.TOKEN_HEADER;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.OK;
 
 @RequiredArgsConstructor
 @Component
@@ -30,10 +29,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (request.getMethod().equalsIgnoreCase(OPTIONS_HTTP_METHOD)) {
-            response.setStatus(HttpStatus.OK.value());
+            response.setStatus(OK.value());
         } else {
-            String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-            if (authorizationHeader == null || !authorizationHeader.startsWith(SecurityConstant.TOKEN_HEADER)) {
+            String authorizationHeader = request.getHeader(AUTHORIZATION);
+            if (authorizationHeader == null || !authorizationHeader.startsWith(TOKEN_HEADER)) {
                 filterChain.doFilter(request, response);
                 return;
             }

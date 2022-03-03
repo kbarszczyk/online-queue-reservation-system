@@ -20,7 +20,7 @@ public class User implements Serializable {
     private String username;
     private String password;
     private String email;
-    private String[] roles;
+    private String role;
     private String[] authorities;
     private boolean isActive;
     private boolean isNotLocked;
