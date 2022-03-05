@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {ResourceCreateDTO} from "../dto/ResourceCreateDTO";
 
 const API_URL = 'http://localhost:8080/resource'
 
@@ -10,6 +11,14 @@ const API_URL = 'http://localhost:8080/resource'
 export class ResourceService {
 
   constructor(private http: HttpClient) {
+  }
+
+  addResource(createDTO: ResourceCreateDTO) {
+    return this.http.post(API_URL, createDTO);
+  }
+
+  deleteResource(resourceId: Number) {
+    return this.http.delete(API_URL + "/" + resourceId);
   }
 
   getAllResources(): Observable<any> {

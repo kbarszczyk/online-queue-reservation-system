@@ -36,6 +36,9 @@ import {AuthenticationService} from "./services/authentication.service";
 import {UserService} from "./services/user.service";
 import {AuthInterceptor} from "./interceptors/auth.interceptor";
 import {AuthenticationGuard} from "./guard/authentication.guard";
+import {MatTableModule} from "@angular/material/table";
+import { DialogAddResourceComponent } from './components/dialogs/dialog-add-resource/dialog-add-resource.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -51,32 +54,35 @@ FullCalendarModule.registerPlugins([
     NavComponent,
     AppointmentComponent,
     AdminLoginComponent,
-    AdminPanelComponent
+    AdminPanelComponent,
+    DialogAddResourceComponent
   ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    FullCalendarModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatStepperModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    FormsModule
-  ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        LayoutModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatListModule,
+        MatGridListModule,
+        MatCardModule,
+        MatMenuModule,
+        FullCalendarModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatStepperModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        FormsModule,
+        MatTableModule,
+        MatDialogModule
+    ],
   providers: [MatDatepickerModule, MatSnackBar, AuthenticationGuard, AuthenticationService, UserService, {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,

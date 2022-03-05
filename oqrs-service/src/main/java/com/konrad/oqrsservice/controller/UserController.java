@@ -2,6 +2,7 @@ package com.konrad.oqrsservice.controller;
 
 import com.konrad.oqrsservice.dto.UserCreateDTO;
 import com.konrad.oqrsservice.dto.UserDTO;
+import com.konrad.oqrsservice.mappers.UserMapper;
 import com.konrad.oqrsservice.model.User;
 import com.konrad.oqrsservice.model.UserPrincipal;
 import com.konrad.oqrsservice.service.UserService;
@@ -32,12 +33,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User user) {
+    public ResponseEntity<UserDTO> login(@RequestBody UserCreateDTO user) {
         authenticate(user.getUsername(), user.getPassword());
         User loginUser = userService.findUserByUsername(user.getUsername());
         UserPrincipal userPrincipal = new UserPrincipal(loginUser);
         HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
-        return new ResponseEntity<>(loginUser, jwtHeader, HttpStatus.OK);
+        return new ResponseEntity<>(UserMapper.INSTANCE.dboToDto(loginUser), jwtHeader, HttpStatus.OK);
     }
 
     private void authenticate(String username, String password) {

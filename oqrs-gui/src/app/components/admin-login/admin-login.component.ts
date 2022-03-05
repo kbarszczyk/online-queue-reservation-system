@@ -6,6 +6,7 @@ import {Subscription} from "rxjs";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {HeaderType} from "../../enums/header-type.enum";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {DialogAddResourceComponent} from "../dialogs/dialog-add-resource/dialog-add-resource.component";
 
 @Component({
   selector: 'app-admin-login',
@@ -47,7 +48,7 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
             duration: 3000,
             verticalPosition: 'top',
             horizontalPosition: 'center',
-            panelClass: ['login-failed']
+            panelClass: ['failed']
           });
         }
       )

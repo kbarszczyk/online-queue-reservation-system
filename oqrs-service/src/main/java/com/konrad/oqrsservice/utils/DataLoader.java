@@ -1,11 +1,9 @@
 package com.konrad.oqrsservice.utils;
 
-import com.konrad.oqrsservice.dto.AppointmentCreateDTO;
-import com.konrad.oqrsservice.dto.ClientCreateDTO;
-import com.konrad.oqrsservice.dto.ResourceCreateDTO;
-import com.konrad.oqrsservice.dto.ResourceDTO;
+import com.konrad.oqrsservice.dto.*;
 import com.konrad.oqrsservice.service.AppointmentService;
 import com.konrad.oqrsservice.service.ResourceService;
+import com.konrad.oqrsservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -18,6 +16,7 @@ public class DataLoader implements CommandLineRunner {
 
     private final ResourceService resourceService;
     private final AppointmentService appointmentService;
+    private final UserService userService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -68,5 +67,14 @@ public class DataLoader implements CommandLineRunner {
         appointment2.setReasonOfVisit("Ból zęba");
 
         appointmentService.addAppointment(addedResource2.getId(), appointment2);
+
+        UserCreateDTO admin = new UserCreateDTO();
+        admin.setEmail("kbarszczyk@protonmail.com");
+        admin.setPassword("admin");
+        admin.setUsername("admin");
+        admin.setFirstName("Konrad");
+        admin.setLastName("Barszczyk");
+
+        userService.registerAdmin(admin);
     }
 }

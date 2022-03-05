@@ -39,4 +39,9 @@ public class ResourceServiceImpl implements ResourceService {
                 .map(resource -> ResourceMapper.INSTANCE.dboToDto(resource))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteResource(Long resourceId) {
+        this.resourceRepository.deleteById(resourceId);
+    }
 }

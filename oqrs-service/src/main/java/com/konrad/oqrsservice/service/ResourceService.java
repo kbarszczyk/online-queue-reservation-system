@@ -8,4 +8,5 @@ import java.util.List;
 public interface ResourceService {
     ResourceDTO addResource(ResourceCreateDTO createDTO);
     List<ResourceDTO> getAllResources();
+    void deleteResource (Long resourceId);
 }

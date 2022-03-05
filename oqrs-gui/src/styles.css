@@ -6,11 +6,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-step-header {
   pointer-events: none !important;
 }
-.my-snackbar{
+.success{
   background-color :darkolivegreen;
   color:white;
 }
-.login-failed{
+.failed{
   background-color: red;
   color:white;
 }

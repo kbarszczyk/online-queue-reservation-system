@@ -129,7 +129,7 @@ export class AppointmentComponent implements OnInit {
     this.router.navigate(['home']);
     this.snackBar.open('Appointment booked successfully!', '', {
       duration: 3000,
-      panelClass: ['my-snackbar']
+      panelClass: ['success']
     });
   }
 }

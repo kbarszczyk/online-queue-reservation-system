@@ -38,12 +38,14 @@ public class ResourceController {
     }
 
     @GetMapping("/booked/{resourceId}")
+    @ResponseStatus(HttpStatus.OK)
     public List<Appointment> getBookedAppointmentsByResource(@PathVariable("resourceId") Long resourceId, @RequestParam("date") String date) {
         LocalDate parsedDate = LocalDate.parse(date);
         return appointmentService.getAppointmentsByResourceId(resourceId, parsedDate);
     }
 
     @GetMapping("/times/available/{resourceId}")
+    @ResponseStatus(HttpStatus.OK)
     public List<AppointmentTimeDTO> getAvailableTimes(@PathVariable("resourceId") Long resourceId, @RequestParam("start") String date
             , @RequestParam("end") String end) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
@@ -56,8 +58,15 @@ public class ResourceController {
     }
 
     @GetMapping("/times/unavailable/{resourceId}")
+    @ResponseStatus(HttpStatus.OK)
     public List<LocalTime> getUnavailableTimes(@PathVariable("resourceId") Long resourceId, @RequestParam("date") String date) {
         LocalDate parsedDate = LocalDate.parse(date);
         return appointmentService.getUnavailableTimes(resourceId, parsedDate);
+    }
+
+    @DeleteMapping("/{resourceId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteResource(@PathVariable("resourceId") Long resourceId) {
+        resourceService.deleteResource(resourceId);
     }
 }

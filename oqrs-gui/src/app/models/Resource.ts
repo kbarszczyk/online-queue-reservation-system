@@ -3,4 +3,5 @@ export interface Resource {
   name: String;
   lengthOfVisit: Number;
   weekendsEnabled: boolean;
+  slots: Number;
 }
