@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Update resource</h1>
+<div mat-dialog-content>
+  <form [formGroup]="resourceGroup">
+    <p>Resource name</p>
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input formControlName="name" required matInput [(ngModel)]="data.name">
+    </mat-form-field>
+    <p>Are resource working in weekends?</p>
+    <mat-form-field appearance="fill">
+      <mat-label>Weekends</mat-label>
+      <mat-select formControlName="weekends" required [(ngModel)]="data.weekendsEnabled">
+        <mat-option [value]=true>Yes</mat-option>
+        <mat-option [value]=false>No</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p>Length of visit</p>
+    <mat-form-field appearance="fill">
+      <mat-label>Length of visit</mat-label>
+      <input formControlName="length" required type="number" matInput [(ngModel)]="data.lengthOfVisit">
+    </mat-form-field>
+    <p>Slots</p>
+    <mat-form-field appearance="fill">
+      <mat-label>Slots per hour</mat-label>
+      <input formControlName="slots" required type="number" matInput [(ngModel)]="data.slots">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-raised-button color="accent" [disabled]=!this.resourceGroup.valid [mat-dialog-close]="data.valueOf()" cdkFocusInitial>Update</button>
+</div>

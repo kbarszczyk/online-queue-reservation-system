@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WorkPlanRepository extends JpaRepository<WorkPlan, Long> {
+    WorkPlan getWorkPlanByResourceId(Long resourceId);
 }

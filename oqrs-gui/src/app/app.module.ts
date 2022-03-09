@@ -39,6 +39,9 @@ import {AuthenticationGuard} from "./guard/authentication.guard";
 import {MatTableModule} from "@angular/material/table";
 import { DialogAddResourceComponent } from './components/dialogs/dialog-add-resource/dialog-add-resource.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { DialogUpdateResourceComponent } from './components/dialogs/dialog-update-resource/dialog-update-resource.component';
+import { DialogAddBreakComponent } from './components/dialogs/dialog-add-break/dialog-add-break.component';
+import { DialogClearBreaksComponent } from './components/dialogs/dialog-clear-breaks/dialog-clear-breaks.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -55,7 +58,10 @@ FullCalendarModule.registerPlugins([
     AppointmentComponent,
     AdminLoginComponent,
     AdminPanelComponent,
-    DialogAddResourceComponent
+    DialogAddResourceComponent,
+    DialogUpdateResourceComponent,
+    DialogAddBreakComponent,
+    DialogClearBreaksComponent
   ],
     imports: [
         BrowserModule,

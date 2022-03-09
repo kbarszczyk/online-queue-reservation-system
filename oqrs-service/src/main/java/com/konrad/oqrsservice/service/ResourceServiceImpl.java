@@ -2,6 +2,7 @@ package com.konrad.oqrsservice.service;
 
 import com.konrad.oqrsservice.dto.ResourceCreateDTO;
 import com.konrad.oqrsservice.dto.ResourceDTO;
+import com.konrad.oqrsservice.dto.ResourceUpdateDTO;
 import com.konrad.oqrsservice.mappers.ResourceMapper;
 import com.konrad.oqrsservice.model.Resource;
 import com.konrad.oqrsservice.model.WorkPlan;
@@ -36,12 +37,27 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public List<ResourceDTO> getAllResources() {
         return resourceRepository.findAll().stream()
-                .map(resource -> ResourceMapper.INSTANCE.dboToDto(resource))
+                .map(ResourceMapper.INSTANCE::dboToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public void deleteResource(Long resourceId) {
         this.resourceRepository.deleteById(resourceId);
+    }
+
+    @Override
+    public ResourceDTO updateResource(ResourceUpdateDTO updateDTO, Long resourceId) {
+        Resource resourceToUpdate = resourceRepository.findById(resourceId)
+                .orElseThrow(() -> new RuntimeException("Resource with " + resourceId + " not found!"));
+
+        resourceToUpdate.setName(updateDTO.getName());
+        resourceToUpdate.setWeekendsEnabled(updateDTO.isWeekendsEnabled());
+        resourceToUpdate.setLengthOfVisit(updateDTO.getLengthOfVisit());
+        resourceToUpdate.setSlots(updateDTO.getSlots());
+
+        Resource savedResource = resourceRepository.save(resourceToUpdate);
+
+        return ResourceMapper.INSTANCE.dboToDto(savedResource);
     }
 }

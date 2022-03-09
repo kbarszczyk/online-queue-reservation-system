@@ -3,9 +3,12 @@ package com.konrad.oqrsservice.controller;
 import com.konrad.oqrsservice.dto.AppointmentTimeDTO;
 import com.konrad.oqrsservice.dto.ResourceCreateDTO;
 import com.konrad.oqrsservice.dto.ResourceDTO;
+import com.konrad.oqrsservice.dto.ResourceUpdateDTO;
 import com.konrad.oqrsservice.model.Appointment;
+import com.konrad.oqrsservice.model.TimePeriod;
 import com.konrad.oqrsservice.service.AppointmentService;
 import com.konrad.oqrsservice.service.ResourceService;
+import com.konrad.oqrsservice.service.WorkPlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,7 @@ public class ResourceController {
 
     private final ResourceService resourceService;
     private final AppointmentService appointmentService;
+    private final WorkPlanService workPlanService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -68,5 +72,27 @@ public class ResourceController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteResource(@PathVariable("resourceId") Long resourceId) {
         resourceService.deleteResource(resourceId);
+    }
+
+    @PutMapping("/{resourceId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResourceDTO updateResource(@RequestBody ResourceUpdateDTO updateDTO, @PathVariable("resourceId") Long resourceId) {
+        return resourceService.updateResource(updateDTO, resourceId);
+    }
+
+    @PostMapping("/break/{resourceId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void addBreakToResource(@PathVariable("resourceId") Long resourceId,
+                                   @RequestBody TimePeriod breakToAdd,
+                                   @RequestParam("dayOfWeek") String dayOfWeek) {
+
+        workPlanService.addBreakToWorkPlan(breakToAdd, resourceId, dayOfWeek);
+    }
+
+    @DeleteMapping("/break/{resourceId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void clearResourceBreaks(@PathVariable("resourceId") Long resourceId,
+                                    @RequestParam("dayOfWeek") String dayOfWeek) {
+        workPlanService.clearBreaks(resourceId, dayOfWeek);
     }
 }
