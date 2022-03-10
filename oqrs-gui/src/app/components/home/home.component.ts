@@ -66,6 +66,9 @@ export class HomeComponent implements OnInit {
             end: e.end,
             title: e.reasonOfVisit,
           };
+          calendarEvent.start[1] = calendarEvent.start[1] - 1;
+          calendarEvent.end[1] = calendarEvent.end[1] - 1;
+          console.log(calendarEvent.start);
           this.events.push(calendarEvent);
         })
       }

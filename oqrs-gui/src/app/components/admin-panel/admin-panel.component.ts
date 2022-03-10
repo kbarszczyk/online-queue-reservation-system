@@ -12,6 +12,16 @@ import {AddBreakDTO} from "../../dto/AddBreakDTO";
 import {DialogAddBreakComponent} from "../dialogs/dialog-add-break/dialog-add-break.component";
 import {TimePeriodDTO} from "../../dto/TimePeriodDTO";
 import {DialogClearBreaksComponent} from "../dialogs/dialog-clear-breaks/dialog-clear-breaks.component";
+import {
+  DialogUpdateWorkplanWithoutWeekendsComponent
+} from "../dialogs/dialog-update-workplan-without-weekends/dialog-update-workplan-without-weekends.component";
+import {UpdateWorkPlanDTO} from "../../dto/UpdateWorkPlanDTO";
+import {UpdateWorkPlanBackendDTO} from "../../dto/UpdateWorkPlanBackendDTO";
+import {
+  DialogUpdateWorkplanWithWeekendsComponent
+} from "../dialogs/dialog-update-workplan-with-weekends/dialog-update-workplan-with-weekends.component";
+import {UpdateWorkPlanWeekendDTO} from "../../dto/UpdateWorkPlanWeekendDTO";
+import {UpdateWorkPlanWeekendBackendDTO} from "../../dto/UpdateWorkPlanWeekendBackendDTO";
 
 @Component({
   selector: 'app-admin-panel',
@@ -28,6 +38,9 @@ export class AdminPanelComponent implements OnInit {
   public resourceUpdateDTO!: ResourceUpdateDTO;
   public addBreakDTO!: AddBreakDTO;
   public breakDay!: string;
+  public workPlanUpdate!: UpdateWorkPlanDTO;
+  public workPlanUpdateWeekend!: UpdateWorkPlanWeekendDTO;
+
   constructor(private resourceService: ResourceService, public dialog: MatDialog,
               private snackBar: MatSnackBar) {
   }
@@ -151,4 +164,76 @@ export class AdminPanelComponent implements OnInit {
       })
     })
   }
+
+  openDialogUpdateWorkPlan(element: Resource) {
+    if (!element.weekendsEnabled) {
+      const dialogRef = this.dialog.open(DialogUpdateWorkplanWithoutWeekendsComponent, {
+        width: '300px',
+        data: {
+          mondayStart: this.workPlanUpdate?.mondayStart, mondayEnd: this.workPlanUpdate?.mondayEnd,
+          tuesdayStart: this.workPlanUpdate?.tuesdayStart, tuesdayEnd: this.workPlanUpdate?.tuesdayEnd,
+          wednesdayStart: this.workPlanUpdate?.wednesdayStart, wednesdayEnd: this.workPlanUpdate?.wednesdayEnd,
+          thursdayStart: this.workPlanUpdate?.thursdayStart, thursdayEnd: this.workPlanUpdate?.thursdayEnd,
+          fridayStart: this.workPlanUpdate?.fridayStart, fridayEnd: this.workPlanUpdate?.fridayEnd
+        }
+      })
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result);
+        let updateWorkPlan: UpdateWorkPlanBackendDTO = {
+          monday: {start: result.mondayStart, end: result.mondayEnd},
+          tuesday: {start: result.tuesdayStart, end: result.tuesdayEnd},
+          wednesday: {start: result.wednesdayStart, end: result.wednesdayEnd},
+          thursday: {start: result.thursdayStart, end: result.thursdayEnd},
+          friday: {start: result.fridayStart, end: result.fridayEnd}
+        }
+        console.log(updateWorkPlan);
+        this.resourceService.updateWorkPlan(updateWorkPlan, element.id).subscribe(response => {
+          this.snackBar.open("WorkPlan updated", '', {
+            duration: 3000,
+            panelClass: ['success']
+          })
+        })
+      })
+    } else {
+      const dialogRef = this.dialog.open(DialogUpdateWorkplanWithWeekendsComponent, {
+        width: '300px',
+        data: {
+          mondayStart: this.workPlanUpdateWeekend?.mondayStart,
+          mondayEnd: this.workPlanUpdateWeekend?.mondayEnd,
+          tuesdayStart: this.workPlanUpdateWeekend?.tuesdayStart,
+          tuesdayEnd: this.workPlanUpdateWeekend?.tuesdayEnd,
+          wednesdayStart: this.workPlanUpdateWeekend?.wednesdayStart,
+          wednesdayEnd: this.workPlanUpdateWeekend?.wednesdayEnd,
+          thursdayStart: this.workPlanUpdateWeekend?.thursdayStart,
+          thursdayEnd: this.workPlanUpdateWeekend?.thursdayEnd,
+          fridayStart: this.workPlanUpdateWeekend?.fridayStart,
+          fridayEnd: this.workPlanUpdateWeekend?.fridayEnd,
+          saturdayStart: this.workPlanUpdateWeekend?.saturdayStart,
+          saturdayEnd: this.workPlanUpdateWeekend?.saturdayEnd,
+          sundayStart: this.workPlanUpdateWeekend?.sundayStart,
+          sundayEnd: this.workPlanUpdateWeekend?.sundayEnd
+        }
+      })
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result);
+        let updateWorkPlan: UpdateWorkPlanWeekendBackendDTO = {
+          monday: {start: result.mondayStart, end: result.mondayEnd},
+          tuesday: {start: result.tuesdayStart, end: result.tuesdayEnd},
+          wednesday: {start: result.wednesdayStart, end: result.wednesdayEnd},
+          thursday: {start: result.thursdayStart, end: result.thursdayEnd},
+          friday: {start: result.fridayStart, end: result.fridayEnd},
+          saturday: {start: result.saturdayStart, end: result.saturdayEnd},
+          sunday: {start: result.sundayStart, end: result.sundayEnd}
+        }
+        console.log(updateWorkPlan);
+        this.resourceService.updateWorkPlan(updateWorkPlan, element.id).subscribe(response => {
+          this.snackBar.open("WorkPlan updated", '', {
+            duration: 3000,
+            panelClass: ['success']
+          })
+        })
+      })
+    }
+  }
 }
+

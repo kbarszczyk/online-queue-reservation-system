@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {ResourceCreateDTO} from "../dto/ResourceCreateDTO";
 import {ResourceUpdateDTO} from "../dto/ResourceUpdateDTO";
 import {TimePeriodDTO} from "../dto/TimePeriodDTO";
+import {UpdateWorkPlanBackendDTO} from "../dto/UpdateWorkPlanBackendDTO";
 
 const API_URL = 'http://localhost:8080/resource'
 
@@ -53,5 +54,9 @@ export class ResourceService {
     const params = new HttpParams()
       .set("dayOfWeek", day);
     return this.http.delete(API_URL + "/" + "break/" + resourceId, {params});
+  }
+
+  updateWorkPlan(updateDTO: UpdateWorkPlanBackendDTO, resourceId: Number) {
+    return this.http.put(API_URL + "/" + "workplan/" + resourceId, updateDTO);
   }
 }

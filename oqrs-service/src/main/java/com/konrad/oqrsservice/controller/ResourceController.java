@@ -1,9 +1,6 @@
 package com.konrad.oqrsservice.controller;
 
-import com.konrad.oqrsservice.dto.AppointmentTimeDTO;
-import com.konrad.oqrsservice.dto.ResourceCreateDTO;
-import com.konrad.oqrsservice.dto.ResourceDTO;
-import com.konrad.oqrsservice.dto.ResourceUpdateDTO;
+import com.konrad.oqrsservice.dto.*;
 import com.konrad.oqrsservice.model.Appointment;
 import com.konrad.oqrsservice.model.TimePeriod;
 import com.konrad.oqrsservice.service.AppointmentService;
@@ -94,5 +91,12 @@ public class ResourceController {
     public void clearResourceBreaks(@PathVariable("resourceId") Long resourceId,
                                     @RequestParam("dayOfWeek") String dayOfWeek) {
         workPlanService.clearBreaks(resourceId, dayOfWeek);
+    }
+
+    @PutMapping("/workplan/{resourceId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateWorkPlan(@PathVariable("resourceId") Long resourceId,
+                               @RequestBody WorkPlanUpdateDTO workPlanUpdateDTO) {
+        workPlanService.updateWorkPlan(resourceId, workPlanUpdateDTO);
     }
 }

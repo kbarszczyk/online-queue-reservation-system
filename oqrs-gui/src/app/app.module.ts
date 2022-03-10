@@ -42,6 +42,8 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { DialogUpdateResourceComponent } from './components/dialogs/dialog-update-resource/dialog-update-resource.component';
 import { DialogAddBreakComponent } from './components/dialogs/dialog-add-break/dialog-add-break.component';
 import { DialogClearBreaksComponent } from './components/dialogs/dialog-clear-breaks/dialog-clear-breaks.component';
+import { DialogUpdateWorkplanWithWeekendsComponent } from './components/dialogs/dialog-update-workplan-with-weekends/dialog-update-workplan-with-weekends.component';
+import { DialogUpdateWorkplanWithoutWeekendsComponent } from './components/dialogs/dialog-update-workplan-without-weekends/dialog-update-workplan-without-weekends.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -61,7 +63,9 @@ FullCalendarModule.registerPlugins([
     DialogAddResourceComponent,
     DialogUpdateResourceComponent,
     DialogAddBreakComponent,
-    DialogClearBreaksComponent
+    DialogClearBreaksComponent,
+    DialogUpdateWorkplanWithWeekendsComponent,
+    DialogUpdateWorkplanWithoutWeekendsComponent
   ],
     imports: [
         BrowserModule,

@@ -18,7 +18,7 @@ public interface AppointmentService {
 
     List<Appointment> getAppointmentsByResourceId(Long resourceId, LocalDate day);
 
-    List<TimePeriod> getAvailableTimePeriods(List<TimePeriod> periods, List<Appointment> appointments);
+    List<TimePeriod> getAvailableTimePeriods(List<TimePeriod> periods, List<Appointment> appointments,Long resourceId);
 
     List<TimePeriod> calculateAvailableHours(List<TimePeriod> availableTimePeriods, Resource resource);
 

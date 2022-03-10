@@ -60,7 +60,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         List<TimePeriod> availablePeriods = selectedDay.getTimePeriodsWithBreaks();
 
-        availablePeriods = getAvailableTimePeriods(availablePeriods, resourceAppointments);
+        availablePeriods = getAvailableTimePeriods(availablePeriods, resourceAppointments,resourceId);
 
         List<TimePeriod> calculatedAvailableHours = calculateAvailableHours(availablePeriods, resourceToBook);
 
@@ -76,23 +76,25 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
     @Override
-    public List<TimePeriod> getAvailableTimePeriods(List<TimePeriod> periods, List<Appointment> appointments) {
+    public List<TimePeriod> getAvailableTimePeriods(List<TimePeriod> periods, List<Appointment> appointments,Long resourceId) {
         List<TimePeriod> toAdd = new ArrayList();
         Collections.sort(appointments);
-        for (Appointment appointment : appointments) {
+        for(Appointment appointment:appointments) {
             for (TimePeriod period : periods) {
-                if ((appointment.getStart().toLocalTime().isBefore(period.getStart()) || appointment.getStart().toLocalTime().equals(period.getStart()))
-                        && appointment.getEnd().toLocalTime().isAfter(period.getStart()) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())) {
-                    period.setStart(appointment.getEnd().toLocalTime());
-                }
-                if (appointment.getStart().toLocalTime().isAfter(period.getStart()) && appointment.getStart().toLocalTime().isBefore(period.getEnd())
-                        && appointment.getEnd().toLocalTime().isAfter(period.getEnd()) || appointment.getEnd().toLocalTime().equals(period.getEnd())) {
-                    period.setEnd(appointment.getStart().toLocalTime());
-                }
-                if (appointment.getStart().toLocalTime().isAfter(period.getStart()) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())) {
-                    toAdd.add(new TimePeriod(period.getStart(), appointment.getStart().toLocalTime()));
-                    period.setStart(appointment.getEnd().toLocalTime());
-                }
+//                if ((appointment.getStart().toLocalTime().isBefore(period.getStart()) || appointment.getStart().toLocalTime().equals(period.getStart()))
+//                        && appointment.getEnd().toLocalTime().isAfter(period.getStart()) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())) {
+//                    period.setStart(appointment.getEnd().toLocalTime());
+//                }
+//                if (appointment.getStart().toLocalTime().isAfter(period.getStart()) && appointment.getStart().toLocalTime().isBefore(period.getEnd())
+//                        && appointment.getEnd().toLocalTime().isAfter(period.getEnd()) || appointment.getEnd().toLocalTime().equals(period.getEnd())) {
+//                    period.setEnd(appointment.getStart().toLocalTime());
+//                }
+//                if (appointment.getStart().toLocalTime().isAfter(period.getStart()) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())) {
+//                    toAdd.add(new TimePeriod(period.getStart(), appointment.getStart().toLocalTime()));
+//                    period.setStart(appointment.getEnd().toLocalTime());
+//                }
+
+                if (appointmentRepository.findAppointmentByResourceId(resourceId).s)
             }
         }
         periods.addAll(toAdd);
@@ -146,7 +148,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         List<TimePeriod> availablePeriods = selectedDay.getTimePeriodsWithBreaks();
 
-        availablePeriods = getAvailableTimePeriods(availablePeriods, resourceAppointments);
+        availablePeriods = getAvailableTimePeriods(availablePeriods, resourceAppointments,resourceId);
 
         return calculateAvailableHours(availablePeriods, resourceToBook);
     }

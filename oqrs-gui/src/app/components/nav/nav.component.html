@@ -1,13 +1,14 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item href="#" routerLink="home">Home</a>
       <a mat-list-item href="#" routerLink="appointment">Add appointment</a>
       <a mat-list-item href="#" routerLink="login">Admin Panel</a>
+      <button type="button" class="logout-button" *ngIf="isLoggedIn()" mat-flat-button color="warn" (click)="logout()">Logout</button>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

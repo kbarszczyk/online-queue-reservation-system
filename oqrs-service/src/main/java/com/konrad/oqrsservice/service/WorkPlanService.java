@@ -1,5 +1,6 @@
 package com.konrad.oqrsservice.service;
 
+import com.konrad.oqrsservice.dto.WorkPlanUpdateDTO;
 import com.konrad.oqrsservice.model.TimePeriod;
 import com.konrad.oqrsservice.model.WorkPlan;
 
@@ -9,4 +10,6 @@ public interface WorkPlanService {
     WorkPlan getWorkPlanByResourceId(Long resourceId);
 
     void clearBreaks(Long resourceId, String dayOfWeek);
+
+    void updateWorkPlan(Long resourceId,WorkPlanUpdateDTO workPlanUpdateDTO);
 }
