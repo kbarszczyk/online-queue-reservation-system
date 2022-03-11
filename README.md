@@ -12,3 +12,9 @@ Make sure you have Docker installed.
 Login: admin
 Password: admin
 ```
+
+### Access to the application via following url
+
+```
+localhost:4200
+```
