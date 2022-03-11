@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 
 @Component
@@ -23,7 +24,7 @@ public class DataLoader implements CommandLineRunner {
         addTestData();
     }
 
-    private void addTestData() {
+    private void addTestData() throws MessagingException {
 
         ResourceCreateDTO resource = new ResourceCreateDTO();
         resource.setName("Wydział Komunikacji");

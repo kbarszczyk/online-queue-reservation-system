@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class AppointmentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AppointmentDTO createAppointment(@RequestParam("resourceId") Long resourceId, @RequestBody AppointmentCreateDTO createDTO) {
+    public AppointmentDTO createAppointment(@RequestParam("resourceId") Long resourceId, @RequestBody AppointmentCreateDTO createDTO) throws MessagingException {
         return appointmentService.addAppointment(resourceId, createDTO);
     }
 
@@ -26,5 +27,11 @@ public class AppointmentController {
     @ResponseStatus(HttpStatus.OK)
     public List<AppointmentDTO> getAppointmentsByResourceId(@PathVariable("resourceId") Long resourceId) {
         return appointmentService.getAppointmentsByResourceId(resourceId);
+    }
+
+    @DeleteMapping("/{uniqueId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAppointment(@PathVariable("uniqueId") String uniqueId) {
+        appointmentService.deleteAppointment(uniqueId);
     }
 }

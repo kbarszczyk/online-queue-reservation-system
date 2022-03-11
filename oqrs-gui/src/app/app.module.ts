@@ -44,6 +44,7 @@ import { DialogAddBreakComponent } from './components/dialogs/dialog-add-break/d
 import { DialogClearBreaksComponent } from './components/dialogs/dialog-clear-breaks/dialog-clear-breaks.component';
 import { DialogUpdateWorkplanWithWeekendsComponent } from './components/dialogs/dialog-update-workplan-with-weekends/dialog-update-workplan-with-weekends.component';
 import { DialogUpdateWorkplanWithoutWeekendsComponent } from './components/dialogs/dialog-update-workplan-without-weekends/dialog-update-workplan-without-weekends.component';
+import { AppointmentAppealComponent } from './components/appointment-appeal/appointment-appeal.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -65,7 +66,8 @@ FullCalendarModule.registerPlugins([
     DialogAddBreakComponent,
     DialogClearBreaksComponent,
     DialogUpdateWorkplanWithWeekendsComponent,
-    DialogUpdateWorkplanWithoutWeekendsComponent
+    DialogUpdateWorkplanWithoutWeekendsComponent,
+    AppointmentAppealComponent
   ],
     imports: [
         BrowserModule,

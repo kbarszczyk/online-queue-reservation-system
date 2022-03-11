@@ -1,0 +1,18 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ../oqrs-gui
+      dockerfile: Dockerfile
+    image: oqrs-frontend
+    ports:
+      - "4200:4200"
+
+  backend:
+    build:
+      dockerfile: docker/Dockerfile
+    image: oqrs-backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/src

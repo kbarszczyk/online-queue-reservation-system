@@ -22,7 +22,11 @@ export class AppointmentService {
   createAppointment(resourceId: number, appointment: AppointmentCreateDTO) {
     const params = new HttpParams()
       .set("resourceId", resourceId);
-    return this.http.post(API_URL, appointment,{params});
+    return this.http.post(API_URL, appointment, {params});
+  }
+
+  deleteAppointment(uniqueId: String) {
+    return this.http.delete(API_URL + "/" + uniqueId);
   }
 
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="x-apple-disable-message-reformatting">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+</head>
+<body>
+<h2>Dear [[${firstName}]] [[${lastName}]]</h2>
+<p>
+    Your appointment are successfully booked in Online Queue Reservation System for [[${resource}]] resource.
+    Your appointment date: [[${date}]]
+    <br>
+    We will send you notification in appointment date to remind you about visit.
+    <br><br>
+    If u want appeal your visit just click at this link: [[${appealLink}]]
+    <br>
+    With regards,
+    <br>
+    Online Queue Reservation Team
+</body>
+</html>

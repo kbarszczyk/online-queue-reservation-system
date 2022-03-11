@@ -9,6 +9,22 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: oqrs.service@gmail.com
+    password: oqrsservice66
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true
 
 jwt:
   secret: dZO4m9GNCwtHGJ5nOoBbWDETDVa34343xxXFerv$^223!$#@%$^*!
+
+

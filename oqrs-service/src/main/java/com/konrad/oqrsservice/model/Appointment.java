@@ -26,10 +26,12 @@ public class Appointment extends BaseEntity implements Comparable<Appointment> {
     @JoinColumn(name = "resource_id")
     private Resource resource;
 
-    @OneToOne(mappedBy = "appointment",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
     private Client client;
 
     private String reasonOfVisit;
+
+    private String uniqueId;
 
     public Appointment() {
 

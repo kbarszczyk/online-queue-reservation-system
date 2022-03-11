@@ -56,7 +56,7 @@
     <p><span class="mat-body-strong">Email: </span> {{this.thirdFormGroup.getRawValue().email}}</p>
     <p><span class="mat-body-strong">Reason for the visit: </span> {{this.thirdFormGroup.getRawValue().reason}}</p>
     <p><span class="mat-body-strong">Resource: </span> {{this.selectedResourceName}}</p>
-    <p><span class="mat-body-strong">Appointment date: </span> {{this.selectedAppointmentDate |date:'yyyy-MM-dd HH:mm'}}</p>
+    <p><span class="mat-body-strong">Appointment date: </span> {{this.selectedAppointmentDate |date:'yyyy-MM-dd HH:mm':'GMT'}}</p>
     <mat-divider></mat-divider>
     <div class="buttons">
       <button mat-button matStepperPrevious>Back</button>

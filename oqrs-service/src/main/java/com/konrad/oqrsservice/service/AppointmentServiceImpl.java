@@ -8,8 +8,10 @@ import com.konrad.oqrsservice.model.*;
 import com.konrad.oqrsservice.repository.AppointmentRepository;
 import com.konrad.oqrsservice.repository.ResourceRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -23,9 +25,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final ResourceRepository resourceRepository;
+    private final NotificationService notificationService;
 
     @Override
-    public AppointmentDTO addAppointment(Long resourceId, AppointmentCreateDTO createDTO) {
+    public AppointmentDTO addAppointment(Long resourceId, AppointmentCreateDTO createDTO) throws MessagingException {
         if (isBookAvailable(resourceId, createDTO)) {
             Resource resourceToBook = resourceRepository.findById(resourceId)
                     .orElseThrow(() -> new RuntimeException("Resource with " + resourceId + " not found!"));
@@ -35,7 +38,9 @@ public class AppointmentServiceImpl implements AppointmentService {
             toSave.setClient(client);
             toSave.setResource(resourceToBook);
             toSave.setEnd(createDTO.getStart().plusMinutes(resourceToBook.getLengthOfVisit()));
+            toSave.setUniqueId(RandomStringUtils.randomAlphanumeric(15));
             Appointment createdAppointment = appointmentRepository.save(toSave);
+            notificationService.sendAppointmentConfirmation(createdAppointment);
             return AppointmentMapper.INSTANCE.dboToDto(createdAppointment);
         } else {
             throw new RuntimeException("Something goes wrong with book your appointment");
@@ -60,7 +65,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         List<TimePeriod> availablePeriods = selectedDay.getTimePeriodsWithBreaks();
 
-        availablePeriods = getAvailableTimePeriods(availablePeriods, resourceAppointments,resourceId);
+        availablePeriods = getAvailableTimePeriods(availablePeriods, resourceAppointments, resourceId);
 
         List<TimePeriod> calculatedAvailableHours = calculateAvailableHours(availablePeriods, resourceToBook);
 
@@ -76,25 +81,27 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
     @Override
-    public List<TimePeriod> getAvailableTimePeriods(List<TimePeriod> periods, List<Appointment> appointments,Long resourceId) {
+    public List<TimePeriod> getAvailableTimePeriods(List<TimePeriod> periods, List<Appointment> appointments, Long resourceId) {
         List<TimePeriod> toAdd = new ArrayList();
+        Resource resource = resourceRepository.findById(resourceId)
+                .orElseThrow(() -> new RuntimeException("Resource with " + resourceId + " not found!"));
         Collections.sort(appointments);
-        for(Appointment appointment:appointments) {
+        for (Appointment appointment : appointments) {
             for (TimePeriod period : periods) {
-//                if ((appointment.getStart().toLocalTime().isBefore(period.getStart()) || appointment.getStart().toLocalTime().equals(period.getStart()))
-//                        && appointment.getEnd().toLocalTime().isAfter(period.getStart()) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())) {
-//                    period.setStart(appointment.getEnd().toLocalTime());
-//                }
-//                if (appointment.getStart().toLocalTime().isAfter(period.getStart()) && appointment.getStart().toLocalTime().isBefore(period.getEnd())
-//                        && appointment.getEnd().toLocalTime().isAfter(period.getEnd()) || appointment.getEnd().toLocalTime().equals(period.getEnd())) {
-//                    period.setEnd(appointment.getStart().toLocalTime());
-//                }
-//                if (appointment.getStart().toLocalTime().isAfter(period.getStart()) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())) {
-//                    toAdd.add(new TimePeriod(period.getStart(), appointment.getStart().toLocalTime()));
-//                    period.setStart(appointment.getEnd().toLocalTime());
-//                }
-
-                if (appointmentRepository.findAppointmentByResourceId(resourceId).s)
+                if (appointmentRepository.countAppointmentsByStart(appointment.getStart()) >= resource.getSlots()) {
+                    if ((appointment.getStart().toLocalTime().isBefore(period.getStart()) || appointment.getStart().toLocalTime().equals(period.getStart()))
+                            && appointment.getEnd().toLocalTime().isAfter(period.getStart()) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())) {
+                        period.setStart(appointment.getEnd().toLocalTime());
+                    }
+                    if (appointment.getStart().toLocalTime().isAfter(period.getStart()) && appointment.getStart().toLocalTime().isBefore(period.getEnd())
+                            && appointment.getEnd().toLocalTime().isAfter(period.getEnd()) || appointment.getEnd().toLocalTime().equals(period.getEnd())) {
+                        period.setEnd(appointment.getStart().toLocalTime());
+                    }
+                    if (appointment.getStart().toLocalTime().isAfter(period.getStart()) && appointment.getEnd().toLocalTime().isBefore(period.getEnd())) {
+                        toAdd.add(new TimePeriod(period.getStart(), appointment.getStart().toLocalTime()));
+                        period.setStart(appointment.getEnd().toLocalTime());
+                    }
+                }
             }
         }
         periods.addAll(toAdd);
@@ -148,8 +155,14 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         List<TimePeriod> availablePeriods = selectedDay.getTimePeriodsWithBreaks();
 
-        availablePeriods = getAvailableTimePeriods(availablePeriods, resourceAppointments,resourceId);
+        availablePeriods = getAvailableTimePeriods(availablePeriods, resourceAppointments, resourceId);
 
         return calculateAvailableHours(availablePeriods, resourceToBook);
+    }
+
+    @Override
+    public void deleteAppointment(String uniqueId) {
+        Appointment toDelete = appointmentRepository.findAppointmentByUniqueId(uniqueId);
+        appointmentRepository.delete(toDelete);
     }
 }

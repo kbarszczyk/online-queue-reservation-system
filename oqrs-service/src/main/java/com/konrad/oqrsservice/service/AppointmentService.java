@@ -6,13 +6,14 @@ import com.konrad.oqrsservice.model.Appointment;
 import com.konrad.oqrsservice.model.Resource;
 import com.konrad.oqrsservice.model.TimePeriod;
 
+import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 public interface AppointmentService {
 
-    AppointmentDTO addAppointment(Long resourceId, AppointmentCreateDTO createDTO);
+    AppointmentDTO addAppointment(Long resourceId, AppointmentCreateDTO createDTO) throws MessagingException;
 
     boolean isBookAvailable(Long resourceId, AppointmentCreateDTO createDTO);
 
@@ -27,4 +28,6 @@ public interface AppointmentService {
     List<LocalTime> getUnavailableTimes(Long resourceId, LocalDate dateToBook);
 
     List<TimePeriod> getAvailableTimes(Long resourceId, LocalDate dateToBook);
+
+    void deleteAppointment(String  uniqueId);
 }
