@@ -28,7 +28,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void sendAppointmentConfirmation(Appointment appointment) throws MailException, MessagingException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 'o' HH:mm");
         MimeMessage msg = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(msg, true);
         helper.setTo(appointment.getClient().getEmail());
