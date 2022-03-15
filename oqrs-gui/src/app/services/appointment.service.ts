@@ -3,6 +3,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Appointment} from "../models/Appointment";
 import {AppointmentCreateDTO} from "../dto/AppointmentCreateDTO";
+import {Resource} from "../models/Resource";
 
 const API_URL = 'http://localhost:8080/appointment'
 
@@ -11,6 +12,8 @@ const API_URL = 'http://localhost:8080/appointment'
 })
 
 export class AppointmentService {
+
+  resource!: Resource;
 
   constructor(private http: HttpClient) {
   }
@@ -28,5 +31,14 @@ export class AppointmentService {
   deleteAppointment(uniqueId: String) {
     return this.http.delete(API_URL + "/" + uniqueId);
   }
+
+  passResource(resource: Resource) {
+    this.resource = resource;
+  }
+
+  getPassedResource() {
+    return this.resource;
+  }
+
 
 }

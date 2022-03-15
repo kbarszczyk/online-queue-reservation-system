@@ -1,39 +1,24 @@
 <mat-stepper orientation="vertical" [linear]=true #stepper>
-  <mat-step [stepControl]="firstFormGroup">
+  <mat-step [stepControl]="firstFormGroup" [completed]="isDateSelect">
     <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Select a resource</ng-template>
-      <mat-form-field appearance="fill">
-        <mat-select [(value)]="resourceId" formControlName="firstCtrl" placeholder="Select a resource to book">
-          <mat-option *ngFor="let resource of resources" [value]="resource.id">
-            {{resource.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext (click)="initCalendar()">Next</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="secondFormGroup" [completed]="isDateSelect">
-    <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Select time to book</ng-template>
+      <ng-template matStepLabel>Wybierz termin i czas rezerwacji</ng-template>
       <ng-template matStepContent>
         <full-calendar #bookCalendar [options]="calendarOptions" [deepChangeDetection]="true"
                        class="calendar"></full-calendar>
-        <button style="margin-top:10px;" mat-button matStepperPrevious>Back</button>
+        <button style="margin-top:10px;" mat-raised-button (click)="backToHome()">Wróć</button>
       </ng-template>
     </form>
   </mat-step>
-  <mat-step [stepControl]="thirdFormGroup">
-    <ng-template matStepLabel>Fill your details</ng-template>
-    <form [formGroup]="thirdFormGroup">
+  <mat-step [stepControl]="secondFormGroup">
+    <ng-template matStepLabel>Uzupełnij swoje dane</ng-template>
+    <form [formGroup]="secondFormGroup">
       <div class="grid">
         <mat-form-field appearance="fill">
-          <mat-label>First Name</mat-label>
+          <mat-label>Imię</mat-label>
           <input matInput formControlName="firstName" required>
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Last Name</mat-label>
+          <mat-label>Nazwisko</mat-label>
           <input matInput formControlName="lastName" required>
         </mat-form-field>
         <mat-form-field appearance="fill">
@@ -41,26 +26,26 @@
           <input matInput placeholder="user@example.com" formControlName="email" required>
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Reason for the visit</mat-label>
+          <mat-label>Powód wizyty</mat-label>
           <textarea matInput formControlName="reason"></textarea>
         </mat-form-field>
       </div>
     </form>
-    <button mat-button matStepperPrevious>Back</button>
-    <button mat-button matStepperNext [disabled]="!thirdFormGroup.valid">Next</button>
+    <button mat-button matStepperPrevious>Wróć</button>
+    <button mat-button matStepperNext [disabled]="!secondFormGroup.valid">Dalej</button>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Summary</ng-template>
-    <p><span class="mat-body-strong">First name: </span> {{this.thirdFormGroup.getRawValue().firstName}}</p>
-    <p><span class="mat-body-strong">Last name: </span> {{this.thirdFormGroup.getRawValue().lastName}}</p>
-    <p><span class="mat-body-strong">Email: </span> {{this.thirdFormGroup.getRawValue().email}}</p>
-    <p><span class="mat-body-strong">Reason for the visit: </span> {{this.thirdFormGroup.getRawValue().reason}}</p>
-    <p><span class="mat-body-strong">Resource: </span> {{this.selectedResourceName}}</p>
-    <p><span class="mat-body-strong">Appointment date: </span> {{this.selectedAppointmentDate |date:'yyyy-MM-dd HH:mm':'GMT'}}</p>
+    <ng-template matStepLabel>Podsumowanie</ng-template>
+    <p><span class="mat-body-strong">Imię: </span> {{this.secondFormGroup.getRawValue().firstName}}</p>
+    <p><span class="mat-body-strong">Nazwisko: </span> {{this.secondFormGroup.getRawValue().lastName}}</p>
+    <p><span class="mat-body-strong">Email: </span> {{this.secondFormGroup.getRawValue().email}}</p>
+    <p><span class="mat-body-strong">Powód wizyty: </span> {{this.secondFormGroup.getRawValue().reason}}</p>
+    <p><span class="mat-body-strong">Zasób: </span> {{this.selectedResourceName}}</p>
+    <p><span class="mat-body-strong">Data i czas rezerwacji: </span> {{this.selectedAppointmentDate |date:'yyyy-MM-dd HH:mm':'GMT'}}</p>
     <mat-divider></mat-divider>
     <div class="buttons">
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-raised-button (click)="bookAppointment()">Book appointment</button>
+      <button mat-button matStepperPrevious>Wróć</button>
+      <button mat-raised-button (click)="bookAppointment()">Zarezerwuj wizytyę</button>
     </div>
   </mat-step>
 </mat-stepper>

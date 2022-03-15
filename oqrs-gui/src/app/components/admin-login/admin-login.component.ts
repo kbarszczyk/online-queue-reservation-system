@@ -6,7 +6,6 @@ import {Subscription} from "rxjs";
 import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {HeaderType} from "../../enums/header-type.enum";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {DialogAddResourceComponent} from "../dialogs/dialog-add-resource/dialog-add-resource.component";
 
 @Component({
   selector: 'app-admin-login',
@@ -44,7 +43,7 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
           this.router.navigate(['admin']);
         },
         (error: HttpErrorResponse) => {
-          this.snackBar.open('Username / password incorrect.Please try again', '', {
+          this.snackBar.open('Niepoprawne dane logowania.Spróbuj ponownie', '', {
             duration: 3000,
             verticalPosition: 'top',
             horizontalPosition: 'center',

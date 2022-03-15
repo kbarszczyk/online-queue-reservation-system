@@ -1,29 +1,29 @@
-<h1 mat-dialog-title>Add break</h1>
+<h1 mat-dialog-title>Dodaj przerwę</h1>
 <div mat-dialog-content>
   <form [formGroup]="formGroup">
     <mat-form-field appearance="outline">
-      <mat-label>Day</mat-label>
+      <mat-label>Dzień</mat-label>
       <mat-select formControlName="breakDay" [(ngModel)]="data.day">
         <mat-option *ngFor="let day of days" [value]="day">
-          {{day|titlecase}}
+          {{dayTranslate(day)}}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <p>Break start</p>
+    <p>Start przerwy</p>
     <mat-form-field appearance="outline">
       <mat-label>Start</mat-label>
       <input type="time" matInput name="start" formControlName="start" [(ngModel)]="data.start">
     </mat-form-field>
-    <p>Break end</p>
+    <p>Koniec przerwy</p>
     <mat-form-field appearance="outline">
-      <mat-label>End</mat-label>
+      <mat-label>Koniec</mat-label>
       <input type="time" matInput name="end" formControlName="end" [(ngModel)]="data.end">
     </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button (click)="onNoClick()">Anuluj</button>
   <button mat-raised-button color="accent" [disabled]=!this.formGroup.valid [mat-dialog-close]="data.valueOf()">
-    Add
+    Dodaj
   </button>
 </div>

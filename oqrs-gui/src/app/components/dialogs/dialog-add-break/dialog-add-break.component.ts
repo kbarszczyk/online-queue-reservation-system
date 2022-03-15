@@ -39,4 +39,33 @@ export class DialogAddBreakComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  dayTranslate(value) {
+    switch (value) {
+      case "monday":
+        return "Poniedziałek";
+        break;
+      case "tuesday":
+        return "Wtorek";
+        break;
+      case "wednesday":
+        return "Środa";
+        break;
+      case "thursday":
+        return "Czwartek";
+        break;
+      case "friday":
+        return "Piątek";
+        break;
+      case "saturday":
+        return "Sobota";
+        break;
+      case "sunday":
+        return "Niedziela";
+        break;
+      default:
+        return "Nieoczekiwany błąd!";
+        break;
+    }
+  }
+
 }

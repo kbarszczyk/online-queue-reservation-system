@@ -1,32 +1,32 @@
-<h1 mat-dialog-title>Update resource</h1>
+<h1 mat-dialog-title>Edytuj dane zasobu</h1>
 <div mat-dialog-content>
   <form [formGroup]="resourceGroup">
-    <p>Resource name</p>
+    <p>Nazwa</p>
     <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
+      <mat-label>Nazwa zasobu</mat-label>
       <input formControlName="name" required matInput [(ngModel)]="data.name">
     </mat-form-field>
-    <p>Are resource working in weekends?</p>
+    <p>Czy zasób pracuje w weekendy?</p>
     <mat-form-field appearance="fill">
-      <mat-label>Weekends</mat-label>
+      <mat-label>Weekendy</mat-label>
       <mat-select formControlName="weekends" required [(ngModel)]="data.weekendsEnabled">
-        <mat-option [value]=true>Yes</mat-option>
-        <mat-option [value]=false>No</mat-option>
+        <mat-option [value]=true>Tak</mat-option>
+        <mat-option [value]=false>Nie</mat-option>
       </mat-select>
     </mat-form-field>
-    <p>Length of visit</p>
+    <p>Długość wizyty</p>
     <mat-form-field appearance="fill">
-      <mat-label>Length of visit</mat-label>
+      <mat-label>Długość wizyty</mat-label>
       <input formControlName="length" required type="number" matInput [(ngModel)]="data.lengthOfVisit">
     </mat-form-field>
-    <p>Slots</p>
+    <p>Sloty</p>
     <mat-form-field appearance="fill">
-      <mat-label>Slots per hour</mat-label>
+      <mat-label>Liczba slotów na godzinę</mat-label>
       <input formControlName="slots" required type="number" matInput [(ngModel)]="data.slots">
     </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-raised-button color="accent" [disabled]=!this.resourceGroup.valid [mat-dialog-close]="data.valueOf()" cdkFocusInitial>Update</button>
+  <button mat-button (click)="onNoClick()">Anuluj</button>
+  <button mat-raised-button color="accent" [disabled]=!this.resourceGroup.valid [mat-dialog-close]="data.valueOf()" cdkFocusInitial>Zaktualizuj</button>
 </div>

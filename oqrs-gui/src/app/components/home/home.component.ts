@@ -5,6 +5,7 @@ import {Resource} from "../../models/Resource";
 import {ResourceService} from "../../services/resource.service";
 import {HttpClient} from "@angular/common/http";
 import {Appointment} from "../../models/Appointment";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit {
   resources: Array<Resource> = [];
   calendarResourceId: Number = 1;
   events: any = [];
+  resource!: Resource;
 
   @ViewChild('calendar') calendarComponent: FullCalendarComponent | undefined;
 
@@ -24,6 +26,7 @@ export class HomeComponent implements OnInit {
     initialView: 'dayGridMonth',
     height: 700,
     aspectRatio: 2,
+    locale: 'pl',
     lazyFetching: true,
     headerToolbar: {
       start: 'prev,next today',
@@ -31,7 +34,11 @@ export class HomeComponent implements OnInit {
       end: 'dayGridMonth,dayGridWeek,listWeek,timeGridWeek'
     },
     buttonText: {
-      'dayGridWeek': 'day'
+      'dayGridWeek': 'tydzień',
+      'today': 'dzisiaj',
+      'dayGridMonth': 'miesiąc',
+      'listWeek': 'lista',
+      'timeGridWeek': 'tydzień z linią czasu'
     },
     firstDay: 1,
     selectable: false,
@@ -48,7 +55,8 @@ export class HomeComponent implements OnInit {
     eventTextColor: "white"
   }
 
-  constructor(private http: HttpClient, private appointmentService: AppointmentService, private resourceService: ResourceService) {
+  constructor(private http: HttpClient, private appointmentService: AppointmentService, private resourceService: ResourceService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -83,6 +91,7 @@ export class HomeComponent implements OnInit {
 
   async changeResource(resource: Resource, event: any) {
     if (event.isUserInput) {
+      this.resource = resource;
       this.calendarComponent?.getApi().removeAllEvents();
       this.events = [];
       this.calendarResourceId = resource.id;
@@ -98,4 +107,9 @@ export class HomeComponent implements OnInit {
     }
   }
 
+
+  navigateToAppointmentComponent() {
+    this.appointmentService.passResource(this.resource);
+    this.router.navigate(['appointment']);
+  }
 }

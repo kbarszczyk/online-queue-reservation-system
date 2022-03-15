@@ -1,74 +1,74 @@
-<h1 mat-dialog-title>Update workplan</h1>
+<h1 mat-dialog-title>Zaktulizuj plan pracy</h1>
 <div mat-dialog-content>
   <form [formGroup]="formGroup">
-    <p>Monday</p>
+    <p>Poniedziałek</p>
     <mat-form-field appearance="outline">
       <mat-label>Start</mat-label>
       <input type="time" matInput formControlName="mondayStart" [(ngModel)]="data.mondayStart">
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>End</mat-label>
+      <mat-label>Koniec</mat-label>
       <input type="time" matInput formControlName="mondayEnd" [(ngModel)]="data.mondayEnd">
     </mat-form-field>
-    <p>Tuesday</p>
+    <p>Wtorek</p>
     <mat-form-field appearance="outline">
       <mat-label>Start</mat-label>
       <input type="time" matInput formControlName="tuesdayStart" [(ngModel)]="data.tuesdayStart">
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>End</mat-label>
+      <mat-label>Koniec</mat-label>
       <input type="time" matInput formControlName="tuesdayEnd" [(ngModel)]="data.tuesdayEnd">
     </mat-form-field>
-    <p>Wednesday</p>
+    <p>Środa</p>
     <mat-form-field appearance="outline">
       <mat-label>Start</mat-label>
       <input type="time" matInput formControlName="wednesdayStart" [(ngModel)]="data.wednesdayStart">
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>End</mat-label>
+      <mat-label>Koniec</mat-label>
       <input type="time" matInput formControlName="wednesdayEnd" [(ngModel)]="data.wednesdayEnd">
     </mat-form-field>
-    <p>Thursday</p>
+    <p>Czwartek</p>
     <mat-form-field appearance="outline">
       <mat-label>Start</mat-label>
       <input type="time" matInput formControlName="thursdayStart" [(ngModel)]="data.thursdayStart">
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>End</mat-label>
+      <mat-label>Koniec</mat-label>
       <input type="time" matInput formControlName="thursdayEnd" [(ngModel)]="data.thursdayEnd">
     </mat-form-field>
-    <p>Friday</p>
+    <p>Piątek</p>
     <mat-form-field appearance="outline">
       <mat-label>Start</mat-label>
       <input type="time" matInput formControlName="fridayStart" [(ngModel)]="data.fridayStart">
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>End</mat-label>
+      <mat-label>Koniec</mat-label>
       <input type="time" matInput formControlName="fridayEnd" [(ngModel)]="data.fridayEnd">
     </mat-form-field>
-    <p>Saturday</p>
+    <p>Sobota</p>
     <mat-form-field appearance="outline">
       <mat-label>Start</mat-label>
       <input type="time" matInput formControlName="saturdayStart" [(ngModel)]="data.saturdayStart">
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>End</mat-label>
+      <mat-label>Koniec</mat-label>
       <input type="time" matInput formControlName="saturdayEnd" [(ngModel)]="data.saturdayEnd">
     </mat-form-field>
-    <p>Sunday</p>
+    <p>Niedziela</p>
     <mat-form-field appearance="outline">
       <mat-label>Start</mat-label>
       <input type="time" matInput formControlName="sundayStart" [(ngModel)]="data.sundayStart">
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>End</mat-label>
+      <mat-label>Koniec</mat-label>
       <input type="time" matInput formControlName="sundayEnd" [(ngModel)]="data.sundayEnd">
     </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button (click)="onNoClick()">Anuluj</button>
   <button mat-raised-button color="accent" [disabled]=!this.formGroup.valid [mat-dialog-close]="data.valueOf()">
-    Update
+    Zaktualizuj
   </button>
 </div>

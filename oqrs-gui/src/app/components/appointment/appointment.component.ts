@@ -20,18 +20,21 @@ export class AppointmentComponent implements OnInit {
   @ViewChild('bookCalendar', {static: true}) calendarComponent: FullCalendarComponent | undefined;
   @ViewChild('stepper') private myStepper!: MatStepper;
 
-  resources: Array<Resource> = [];
   resourceId: number = 1;
+  resource!: Resource;
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup;
-  thirdFormGroup!: FormGroup;
+  selectedResourceName!: String;
   selectedAppointmentDate!: string | null;
   isDateSelect: boolean = false;
-  selectedResourceName!: String;
 
 
   calendarOptions: CalendarOptions = {
     initialView: 'listDay',
+    locale: 'pl',
+    buttonText: {
+      "today": 'dzisiaj'
+    },
     headerToolbar: {
       left: 'title',
       center: '',
@@ -65,71 +68,76 @@ export class AppointmentComponent implements OnInit {
   }
 
   constructor(private _formBuilder: FormBuilder, private router: Router, private resourceService: ResourceService,
-              private appointmentService: AppointmentService,private snackBar:MatSnackBar) {
+              private appointmentService: AppointmentService, private snackBar: MatSnackBar) {
   }
 
 
   ngOnInit() {
-    this.getAllResources();
+    this.resource = this.appointmentService.getPassedResource();
+    this.resourceId = this.resource.id.valueOf();
 
     this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required],
-    });
-    this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required]
     })
-    this.thirdFormGroup = this._formBuilder.group({
+    this.secondFormGroup = this._formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       reason: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     })
-  }
 
-  getAllResources() {
-    this.resourceService.getAllResources().subscribe(data => {
-      this.resources = data;
-    })
+    this.initCalendar();
   }
 
   getResourceId() {
     return this.resourceId;
   }
 
-  initCalendar() {
-    let resource = this.resources.find(x => x.id === this.resourceId);
-    this.selectedResourceName = resource!.name;
-    this.calendarOptions.weekends = resource!.weekendsEnabled;
-    this.calendarOptions.events = {
-      url: 'http://localhost:8080/resource/times/available/' + this.getResourceId()
+  handleClick(event) {
+    this.selectedAppointmentDate = new Date(event.event.start.toString().split('GMT')[0] + ' UTC').toISOString();
+    if (new Date(event.event.start).getTime() < Date.now()) {
+      this.snackBar.open("Ten termin jest już niedostępny, wybierz inny",'',{
+        duration:2000,
+        panelClass:['failed']
+      })
+    } else {
+      console.log(this.selectedAppointmentDate);
+      this.isDateSelect = true;
+      setTimeout(() =>
+        this.myStepper.next(), 1);
     }
   }
 
-  handleClick(event) {
-    this.selectedAppointmentDate = new Date(event.event.start.toString().split('GMT')[0]+' UTC').toISOString();
-    console.log(this.selectedAppointmentDate);
-    this.isDateSelect = true;
-    setTimeout(() =>
-      this.myStepper.next(), 1);
+
+  initCalendar() {
+    this.selectedResourceName = this.resource!.name;
+    this.calendarOptions.weekends = this.resource!.weekendsEnabled;
+    this.calendarOptions.events = {
+      url: 'http://localhost:8080/resource/times/available/' + this.getResourceId()
+    }
   }
 
   bookAppointment() {
     let createDTO: AppointmentCreateDTO = {
       start: String(this.selectedAppointmentDate),
       client: {
-        firstName: String(this.thirdFormGroup.getRawValue().firstName),
-        lastName: String(this.thirdFormGroup.getRawValue().lastName),
-        email: String(this.thirdFormGroup.getRawValue().email)
+        firstName: String(this.secondFormGroup.getRawValue().firstName),
+        lastName: String(this.secondFormGroup.getRawValue().lastName),
+        email: String(this.secondFormGroup.getRawValue().email)
       },
-      reasonOfVisit: String(this.thirdFormGroup.getRawValue().reason)
+      reasonOfVisit: String(this.secondFormGroup.getRawValue().reason)
     };
 
     this.appointmentService.createAppointment(this.resourceId, createDTO).subscribe(response =>
       console.log(response));
     this.router.navigate(['home']);
-    this.snackBar.open('Appointment booked successfully!', '', {
+    this.snackBar.open('Pomyślnie zarezerwowano wizytę, wysłano potwierdzenie rezerwacji na adres e-mail', '', {
       duration: 3000,
       panelClass: ['success']
     });
+  }
+
+  backToHome() {
+    this.router.navigate(['home']);
   }
 }

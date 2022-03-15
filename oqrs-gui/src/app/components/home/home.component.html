@@ -1,9 +1,12 @@
+<div class="controls">
 <mat-form-field appearance="fill">
-  <mat-label>Resource</mat-label>
+  <mat-label>Zasób</mat-label>
   <mat-select>
     <mat-option *ngFor="let resource of resources" [value]="resource.id" (onSelectionChange)="changeResource(resource,$event)">
       {{resource.name}}
     </mat-option>
   </mat-select>
 </mat-form-field>
+<button mat-raised-button class="appointment-button" *ngIf="resource" (click)="navigateToAppointmentComponent()">Zarezerwuj termin</button>
+</div>
 <full-calendar #calendar [options]="calendarOptions" [deepChangeDetection]="true" class="calendar"></full-calendar>

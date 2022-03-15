@@ -22,6 +22,8 @@ import {
 } from "../dialogs/dialog-update-workplan-with-weekends/dialog-update-workplan-with-weekends.component";
 import {UpdateWorkPlanWeekendDTO} from "../../dto/UpdateWorkPlanWeekendDTO";
 import {UpdateWorkPlanWeekendBackendDTO} from "../../dto/UpdateWorkPlanWeekendBackendDTO";
+import {AuthenticationService} from "../../services/authentication.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-admin-panel',
@@ -42,10 +44,14 @@ export class AdminPanelComponent implements OnInit {
   public workPlanUpdateWeekend!: UpdateWorkPlanWeekendDTO;
 
   constructor(private resourceService: ResourceService, public dialog: MatDialog,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar, private authenticationService: AuthenticationService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
+    if (!this.authenticationService.isLoggedIn()) {
+      this.router.navigate(['login']);
+    }
     this.getAllResources();
   }
 
@@ -68,7 +74,7 @@ export class AdminPanelComponent implements OnInit {
       this.resourceCreateDTO = result;
       if (this.resourceCreateDTO.name) {
         if (this.resources.find(element => element.name === this.resourceCreateDTO.name)) {
-          this.snackBar.open("Resource with this name already exists.Pass another one", '', {
+          this.snackBar.open("Zasób o tej nazwie istnieje.Prosimy podać inną nazwę", '', {
             duration: 3000,
             panelClass: ['failed']
           })
@@ -76,7 +82,7 @@ export class AdminPanelComponent implements OnInit {
         }
         this.resourceService.addResource(this.resourceCreateDTO).subscribe(response => {
           console.log(response);
-          this.snackBar.open("Resource added successfully!", '', {
+          this.snackBar.open("Zasób został pomyślnie dodany", '', {
             duration: 3000,
             panelClass: ['success']
           })
@@ -95,7 +101,7 @@ export class AdminPanelComponent implements OnInit {
 
   deleteResource(resourceId: Number) {
     this.resourceService.deleteResource(resourceId).subscribe();
-    this.snackBar.open("Resource deleted", '', {
+    this.snackBar.open("Zasób pomyślnie usunięty", '', {
       duration: 3000,
       panelClass: ['success']
     })
@@ -115,7 +121,7 @@ export class AdminPanelComponent implements OnInit {
       this.resourceUpdateDTO = result;
       this.resourceService.updateResource(this.resourceUpdateDTO, resourceId).subscribe(response => {
         console.log(response);
-        this.snackBar.open("Resource updated successfully!", '', {
+        this.snackBar.open("Pomyślnie zaktulizowano zasób", '', {
           duration: 3000,
           panelClass: ['success']
         })
@@ -138,7 +144,7 @@ export class AdminPanelComponent implements OnInit {
         end: result.end
       }
       this.resourceService.addBreak(timePeriod, resourceId, this.breakDay).subscribe(response => {
-        this.snackBar.open("Break added successfully!", '', {
+        this.snackBar.open("Przerwa dodana pomyślnie", '', {
           duration: 3000,
           panelClass: ['success']
         })
@@ -157,7 +163,7 @@ export class AdminPanelComponent implements OnInit {
       console.log(result);
       this.breakDay = result;
       this.resourceService.clearBreaks(this.breakDay, resourceId).subscribe(response => {
-        this.snackBar.open("Breaks deleted", '', {
+        this.snackBar.open("Pomyślnie usunięto przerwy", '', {
           duration: 3000,
           panelClass: ['success']
         })
@@ -188,7 +194,7 @@ export class AdminPanelComponent implements OnInit {
         }
         console.log(updateWorkPlan);
         this.resourceService.updateWorkPlan(updateWorkPlan, element.id).subscribe(response => {
-          this.snackBar.open("WorkPlan updated", '', {
+          this.snackBar.open("Plan pracy zaktulizowany pomyślnie", '', {
             duration: 3000,
             panelClass: ['success']
           })
@@ -227,13 +233,22 @@ export class AdminPanelComponent implements OnInit {
         }
         console.log(updateWorkPlan);
         this.resourceService.updateWorkPlan(updateWorkPlan, element.id).subscribe(response => {
-          this.snackBar.open("WorkPlan updated", '', {
+          this.snackBar.open("Plan pracy zaktulizowany pomyślnie", '', {
             duration: 3000,
             panelClass: ['success']
           })
         })
       })
     }
+  }
+
+  formatter(value) {
+    return (value === true) ? 'Tak' : ((value === false) ? 'Nie' : '');
+  }
+
+  logout() {
+    this.authenticationService.logOut();
+    this.router.navigate(['home']);
   }
 }
 
