@@ -32,7 +32,7 @@ public class NotificationServiceImpl implements NotificationService {
         MimeMessage msg = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(msg, true);
         helper.setTo(appointment.getClient().getEmail());
-        helper.setSubject("Appointment confirmation - Online Queue Reservation System");
+        helper.setSubject("Potwierdzenie rezerwacji - Internetowy System Rezerwacji Kolejki");
         Context context = new Context();
         context.setVariable("firstName", appointment.getClient().getFirstName());
         context.setVariable("lastName", appointment.getClient().getLastName());
@@ -55,7 +55,7 @@ public class NotificationServiceImpl implements NotificationService {
             MimeMessage msg = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(msg, true);
             helper.setTo(appointment.getClient().getEmail());
-            helper.setSubject("Appointment reminder - Online Queue Reservation System");
+            helper.setSubject("Przypomnienie o wizycie - Internetowy System Rezerwacji Kolejki");
             Context context = new Context();
             context.setVariable("firstName", appointment.getClient().getFirstName());
             context.setVariable("lastName", appointment.getClient().getLastName());
