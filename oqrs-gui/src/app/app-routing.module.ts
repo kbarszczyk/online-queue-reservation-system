@@ -12,7 +12,8 @@ const routes: Routes = [
   {path: 'appointment', component: AppointmentComponent},
   {path: 'login', component: AdminLoginComponent},
   {path: 'admin', component: AdminPanelComponent},
-  {path: 'cancel/:id', component: AppointmentAppealComponent}
+  {path: 'cancel/:id', component: AppointmentAppealComponent},
+  {path: '**', component:HomeComponent}
 ];
 
 @NgModule({
