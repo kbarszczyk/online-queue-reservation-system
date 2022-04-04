@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-content>
     <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm.value)">
-      <h2>Zaloguj się</h2>
+      <h2>Logowanie</h2>
       <mat-form-field>
         <input matInput placeholder="Login" [(ngModel)]="username" name="username" required>
         <mat-error>

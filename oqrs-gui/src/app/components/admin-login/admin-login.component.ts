@@ -32,12 +32,10 @@ export class AdminLoginComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(user: User): void {
-    console.log(user);
     this.subscription.push(
       this.authenticationService.login(user).subscribe(
         (response: HttpResponse<User>) => {
           const token = response.headers.get(HeaderType.JWT_TOKEN);
-          console.log(token);
           this.authenticationService.saveToken(token);
           this.authenticationService.addUserToLocalStorage(response.body);
           this.router.navigate(['admin']);
