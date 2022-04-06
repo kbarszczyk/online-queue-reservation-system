@@ -44,11 +44,9 @@ export class AppointmentComponent implements OnInit {
       start: Date.now()
     },
     contentHeight: "auto",
-    noEventsText: 'Unavailable',
+    noEventsText: 'Brak dostępnych terminów',
     allDaySlot: false,
-    slotMinTime: "06:00:00",
-    slotMaxTime: "21:00:00",
-    firstDay: 2,
+    firstDay: 1,
     displayEventEnd: true,
     displayEventTime: true,
     dayMaxEvents: true,
@@ -58,9 +56,6 @@ export class AppointmentComponent implements OnInit {
       minute: '2-digit',
       meridiem: false,
       hour12: false
-    },
-    events: {
-      url: 'http://localhost:8080/resource/times/available/' + this.getResourceId()
     },
     eventClick: this.handleClick.bind(this),
     eventTextColor: 'black',
@@ -73,9 +68,7 @@ export class AppointmentComponent implements OnInit {
 
 
   ngOnInit() {
-    this.resource = this.appointmentService.getPassedResource();
-    this.resourceId = this.resource.id.valueOf();
-
+    this.initCalendar();
     this.firstFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required]
     })
@@ -85,8 +78,6 @@ export class AppointmentComponent implements OnInit {
       reason: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     })
-
-    this.initCalendar();
   }
 
   getResourceId() {
@@ -96,12 +87,11 @@ export class AppointmentComponent implements OnInit {
   handleClick(event) {
     this.selectedAppointmentDate = new Date(event.event.start.toString().split('GMT')[0] + ' UTC').toISOString();
     if (new Date(event.event.start).getTime() < Date.now()) {
-      this.snackBar.open("Ten termin jest już niedostępny, wybierz inny",'',{
-        duration:2000,
-        panelClass:['failed']
+      this.snackBar.open("Ten termin jest już niedostępny, wybierz inny", '', {
+        duration: 2000,
+        panelClass: ['failed']
       })
     } else {
-      console.log(this.selectedAppointmentDate);
       this.isDateSelect = true;
       setTimeout(() =>
         this.myStepper.next(), 1);
@@ -110,6 +100,8 @@ export class AppointmentComponent implements OnInit {
 
 
   initCalendar() {
+    this.resource = this.appointmentService.getPassedResource();
+    this.resourceId = this.resource.id.valueOf();
     this.selectedResourceName = this.resource!.name;
     this.calendarOptions.weekends = this.resource!.weekendsEnabled;
     this.calendarOptions.events = {
